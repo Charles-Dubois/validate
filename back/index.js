@@ -9,7 +9,7 @@ app.use("/email", emailRouter);
 app.use("/id", idRouter);
 app.get("/", (_req, res) => {
   res.send(
-    "use endpoint /users whith GET method to show all users \n use endpoint /users whith POST method to add a user \n use endpoint /users/:username whith GET method to show the user who correspond \n use endpoint /email/:email@exemple.com whith GET method to see the who correspond"
+    "use endpoint /users whith GET method to show all users \n use endpoint /users whith POST method to add a user \n use endpoint /users/:username whith GET method to show the user who correspond \n use endpoint /email/:email@exemple.com whith GET method to see the user who correspond \n use use endpoint /id/:id whith GET method to see the user who correspond "
   );
 });
 

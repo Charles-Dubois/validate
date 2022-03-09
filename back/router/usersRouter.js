@@ -7,7 +7,7 @@ const userData = require("../data.json");
 const user = Joi.object({
   username: Joi.string().alphanum().min(4).required(),
   email: Joi.string().email().required(),
-  age: Joi.number().min(10).required(),
+  age: Joi.string().pattern(new RegExp("^[0-9]{2,2}$")).required(),
   city: Joi.string().alphanum().required(),
 });
 
