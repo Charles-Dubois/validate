@@ -43,7 +43,9 @@ router.post("/", validUser, (_req, _res) => {
 });
 router.get("/:username", (req, res) => {
   const user = userData.find((theUser) => {
-    return theUser.data.username === req.params.username;
+    return (
+      theUser.data.username.toLowerCase() === req.params.username.toLowerCase()
+    );
   });
 
   if (user) {

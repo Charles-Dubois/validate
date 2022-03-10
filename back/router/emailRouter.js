@@ -6,7 +6,7 @@ const userData = require("../data.json");
 
 router.get("/:email", (req, res) => {
   const user = userData.find((theUser) => {
-    return theUser.data.email === req.params.email;
+    return theUser.data.email.toLowerCase() === req.params.email.toLowerCase();
   });
 
   if (user) {
