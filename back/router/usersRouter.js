@@ -14,16 +14,8 @@ const user = Joi.object({
 // Middleware pour vérifier les donnée envoyée par un utilisateur
 function validUser(req, res, next) {
   const validation = user.validate(req.body);
-  if (!validation.error) {
-    const newUser = {
-      id: Math.floor(Math.random() * (1000 - 1)) + 1,
-      data: validation.value,
-    };
-    userData.push(newUser);
-
-    res.status(201).json({ message: "user added", newUser });
-  } else {
-    res.status(400).json({
+  if (validation.error) {
+    return res.status(400).json({
       message: "error 400 bad request",
       description: validation.error.details[0].message,
     });
@@ -33,12 +25,21 @@ function validUser(req, res, next) {
 //Routes
 router.get("/", (_req, res) => {
   if (userData.length > 0) {
-    res.send(userData);
+    res.json(userData);
   } else {
     res.send("Any user added !");
   }
 });
-router.post("/", validUser, (_req, _res) => {
+router.post("/", validUser, (req, res) => {
+  {
+    const newUser = {
+      id: Math.floor(Math.random() * (1000 - 1)) + 1,
+      data: req.body,
+    };
+    userData.push(newUser);
+
+    res.status(201).json({ message: "user added", newUser });
+  }
   console.log("request received");
 });
 router.get("/:username", (req, res) => {
@@ -51,8 +52,8 @@ router.get("/:username", (req, res) => {
   if (user) {
     res.json(user);
   } else {
-    res.status(400).json({
-      message: "error 400 bad request",
+    res.status(404).json({
+      message: "error 404 not found",
       description: "this user doesn't exists",
     });
   }
