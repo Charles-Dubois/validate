@@ -1,22 +1,27 @@
 const express = require("express");
 const router = express.Router();
-const userData = require("../data.json");
 
+const dotenv = require("dotenv");
+dotenv.config({
+  path: "./config.env",
+});
+const { Pool } = require("pg");
+const Postgres = new Pool({ ssl: { rejectUnauthorized: false } });
 //Routes
 
-router.get("/:email", (req, res) => {
-  const user = userData.find((theUser) => {
-    return theUser.data.email.toLowerCase() === req.params.email.toLowerCase();
-  });
-
-  if (user) {
-    res.json(user);
-  } else {
-    console.log(req.params.email);
-    res.status(400).json({
-      message: "error 400 bad request",
-      description: "this email doesn't exists",
+router.get("/:email", async (req, res) => {
+  let user;
+  try {
+    user = await Postgres.query("SELECT * FROM users WHERE LOWER(email) = $1", [
+      req.params.email.toLowerCase(),
+    ]);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({
+      message: "This mail does not exists",
     });
   }
+  const result = user.rows;
+  res.json(result);
 });
 module.exports = router;

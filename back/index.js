@@ -1,9 +1,11 @@
 const express = require("express");
 const app = express();
 app.use(express.json());
+
 const usersRouter = require("./router/usersRouter");
 const emailRouter = require("./router/emailRouter");
 const idRouter = require("./router/idRouter");
+
 app.use("/users", usersRouter);
 app.use("/email", emailRouter);
 app.use("/id", idRouter);
